@@ -1,0 +1,85 @@
+---
+objects:
+  - user: Individual
+---
+mandatory: True
+code: |
+  introduction
+  user.name.first
+  custom_paragraph
+  user.signature
+  if user_lives_in_Alabama:
+    sweet_home_Alabama
+  else:
+    get_to_work
+  download_screen
+---
+comment: |
+  Using an introduction screen is a good idea. It helps your
+  user understand what the tool can and cannot do.
+  Use the specifier field for a screen that doesn't do anything
+  except display a continue button.
+question: |
+  Prisoners of Conscience Letter Writing Tool
+subquestion: |
+  This tool will help you send a letter to request the release of Dr. Martin Luther King, Jr. He was arrested in August 1963 during non-violent demonstrations against segregation in the city of Birmingham, Alabama.
+  At the end, we'll ask you sign the letter, print it, and mail it to the city prosecutor's office.
+continue button field: introduction
+---
+question: |
+  What is your name
+fields:
+  - no label: user.name.first
+---
+question: |
+  Sign below
+signature: user.signature
+under: |
+  ${user}
+---
+comment: |
+  input type: area lets you collect more than one line of text
+  at once
+question: |
+  Amnesty International uses international letter writing and other pressure campaigns to get governments around the world to release "prisoners of conscience". Why are you writing a letter today? 
+fields:
+  - no label: custom_paragraph
+    input type: area
+---
+question: |
+  Do you live in Alabama?
+fields:
+  - no label: user_lives_in_Alabama
+    datatype: yesnoradio
+---
+continue button field: get_to_work
+question: |
+  You can still help even if you don't live in Alabama. Every letter helps!
+---
+continue button field: sweet_home_Alabama
+question: |
+  We need your help! As a citizen of this state it is your duty to help!
+---
+event: download_screen
+question: |
+  Your letter is ready to download and print
+subquestion: |
+  Print the letter below. Mail it to the Birmingham prosecutor
+attachment:
+  name: Letter to the Birmingham Jail
+  filename: prisoners of conscience letter
+  content: |
+    Birmingham City Prosecutor
+     % if user_lives_in_Alabama:
+    You live in Alabama 
+    % endif
+    ## The charges against Martin Luther King Jr. must be dropped
+    Dear Prosecutor,
+    I am writing to you concerning the prosecution of Martin Luther King Jr., who is currently incarcerated in the Birmingham Jail.
+    Dr. King was arrested as a non-violent participant in protests against segregation. His arrest is unfair and in violation of international law.
+    ${custom_paragraph}
+    In conclusion, I ask you to immediately release Dr. King.
+    Yours sincerely,
+    ${user.signature}
+    ${user}
+    ${today()}
